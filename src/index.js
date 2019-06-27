@@ -1,213 +1,61 @@
-const { app, Menu, Tray, BrowserWindow, ipcMain, Notification } = require("electron");
-const notifier = require("node-notifier");
-const path = require("path");
-let options = {};
-let window = undefined
-if (process.platform !== "darwin") {
-  options = {
-    player: path.join(__dirname, "../lib/mplayer.exe")
-  };
-}
-var player = require("play-sound")(options);
-const moment = require("moment");
-moment.locale("it");
+const { ipcRenderer } = require("electron");
 
-const timers = require("./timers.json");
-
-const fs = require("fs");
-const audioPath = path.join(__dirname, "../audio");
-
-let audios = fs.readdirSync(audioPath);
-audios = audios.map(x => `${audioPath}/${x}`);
-
-let tray = undefined;
-let colorActive = "\u001b[31m";
-let backgroundActive = "\u001b[41;1m";
-let colorPause = "\u001b[32m";
-let backgroundPause = "\u001b[42;1m";
-let icon;
-
-if (process.platform === "darwin") {
-  icon = path.resolve(__dirname, "pomdor-mac.png");
-} else {
-  icon = path.resolve(__dirname, "pomdor-win-black.png");
-}
-
-const updateTimers = () => {
-  timers.forEach(t => {
-    t.startMoment = moment(t.start, "LTS");
-    t.endMoment = moment(t.end, "LTS");
-  });
-};
-updateTimers();
-
-const createTray = () => {
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: "About",
-      click() {
-        require("electron").shell.openExternalSync(
-          "https://www.evoluzionetelematica.it"
-        );
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: "Quit Pomdor",
-      click() {
-        app.quit();
-      }
-    }
-  ]);
-  tray = new Tray(icon);
-  tray.setToolTip("Pomdor");
-  //tray.setContextMenu(contextMenu);
-  tray.on('click', function (event) {
-    toggleWindow()
-  });
-};
-
-const setNull = () => {
-  tray.setTitle("🕹️");
-  if (process.platform !== "darwin") {
-    tray.setToolTip("🕹️");
-    tray.setImage(path.resolve(__dirname, "pomdor-win-black.png"));
-  }
-};
-
-const setWork = (name, minute, second) => {
-  tray.setTitle("🍅 " + colorActive + name + " - " + minute + ":" + second);
-
-  if (process.platform !== "darwin") {
-    tray.setToolTip(name + " - " + minute + ":" + second);
-    tray.setImage(path.resolve(__dirname, "pomdor-win-red.png"));
-  }
-};
-
-const setPause = (name, minute, second) => {
-  tray.setTitle("🍌 " + colorPause + name + " - " + minute + ":" + second);
-  if (process.platform !== "darwin") {
-    tray.setToolTip(name + " - " + minute + ":" + second);
-    tray.setImage(path.resolve(__dirname, "pomdor-win-green.png"));
-  }
-};
-
-const setBoh = () => {
-  tray.setTitle("😴 Boh");
-  if (process.platform !== "darwin") {
-    tray.setToolTip("😴 Boh");
-    tray.setImage(path.resolve(__dirname, "pomdor-win-black.png"));
-  }
-};
-
-const notify = (minute, second, pause) => {
-  if (minute === "00" && second === "01") {
-    notifier.notify({
-      title: "Pomdor",
-      message: pause ? "🍅 Pomodoro" : "🍌 Pausa"
-    });
-    playSound();
-  }
-};
-
-const playSound = () => {
-  let audio = audios[Math.floor(Math.random() * audios.length)];
-  player.play(audio, function(err) {
-    if (err) throw err;
-  });
-};
-
-function update() {
-
-  let date = moment();
-  let timer = null;
-
-  if (timers[0].startMoment.date() != date.date()) updateTimers();
-
-  timers.forEach(t => {
-    if (date.isBetween(t.startMoment, t.endMoment)) timer = t;
-  });
-
-  let minute =
-    timer != null
-      ? timer.length + timer.startMoment.diff(date, "minutes") - 1
-      : 0;
-
-  let second =
-    timer != null ? 60 - (date.second() - timer.startMoment.second()) : 0;
-
-  minute = minute < 10 ? `0${minute}` : minute;
-  second = second < 10 ? `0${second}` : second;
-  type = timer != null ? timer.type : "";
-  name = timer != null ? timer.name : "";
-
-  if (timer === null) {
-    setNull();
-  } else if (type === "work") {
-    setWork(name, minute, second);
-    notify(minute, second, false);
-  } else if (type === "pause") {
-    setPause(name, minute, second);
-    notify(minute, second, true);
-  } else {
-    setBoh();
-  }
-}
-
-if (process.platform === "darwin") app.dock.hide();
-
-app.on("ready", () => {
-  createTray();
-  createWindow();
-  setInterval(update, 1000);
+ipcRenderer.on("play", (_, audio) => {
+  var player = new Audio(audio);
+  player.play();
 });
 
+window.addEventListener("DOMContentLoaded", () => {
+  [].forEach.call(document.querySelectorAll(".js-audio"), function(el) {
+    el.addEventListener("click", () => {
+      el.classList.toggle("fa-volume-mute");
+      el.classList.toggle("fa-volume-up");
+    });
+  });
 
-const getWindowPosition = () => {
-  const windowBounds = window.getBounds();
-  const trayBounds = tray.getBounds();
-  const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
-  const y = Math.round(trayBounds.y + trayBounds.height + 4);
-  return {x: x, y: y};
-}
+  [].forEach.call(document.querySelectorAll(".js-settings"), function(el) {
+    el.addEventListener("click", () => {
+      const a = document.getElementById("js-panel");
+      a.classList.toggle("is-active");
+      el.classList.toggle("fa-times-circle");
+      el.classList.toggle("fa-sliders-h");
+    });
+  });
 
-const createWindow = () => {
-  window = new BrowserWindow({
-    width: 320,
-    height: 450,
-    show: false,
-    frame: false,
-    fullscreenable: false,
-    resizable: false,
-    transparent: true,
-    hasShadow: false,
-    webPreferences: {
-      nodeIntegration: true,
-      //backgroundThrottling: false
-    }
-  })
-  window.loadURL(`file://${path.join(__dirname, 'index.html')}`)
+  const progressCurrent = document.querySelectorAll(".js-progress-current");
 
-  // Hide the window when it loses focus
-  window.on('blur', () => {
-    if (!window.webContents.isDevToolsOpened()) {
-      window.hide()
-    }
-  })
-}
+  progressCurrent.forEach(path => {
+    // Get the length of the path
+    let length = path.getTotalLength();
 
-const toggleWindow = () => {
-  window.isVisible() ? window.hide() : showWindow();
-}
+    // Just need to set this once manually on the .meter element and then can be commented out
+    // path.style.strokeDashoffset = length;
+    // path.style.strokeDasharray = length;
 
-const showWindow = () => {
-  const position = getWindowPosition();
-  window.setPosition(position.x, position.y, false);
-  window.show();
-}
+    // Get the value of the meter
+    let value = parseInt(path.parentNode.getAttribute("data-value"));
+    // Calculate the percentage of the total length
+    let to = length * ((100 - value) / 100);
+    // Trigger Layout in Safari hack https://jakearchibald.com/2013/animated-line-drawing-svg/
+    path.getBoundingClientRect();
+    // Set the Offset
+    path.style.strokeDashoffset = Math.max(0, to);
+  });
+});
 
-ipcMain.on('show-window', () => {
-  showWindow()
-})
+const quit = document.getElementById("js-quit");
+quit.addEventListener("click", () => {
+  ipcRenderer.send("quit");
+});
+
+const total = document.getElementById("js-total");
+const progress = document.getElementById("js-progress");
+const progressTime = document.getElementById("js-progress-time");
+ipcRenderer.on("updateTimer", (_, timer) => {
+  total.innerHTML = timer.total;
+  progressTime.innerHTML = timer.name + " " + timer.time;
+  progress.setAttribute('data-value', timer.progress);
+  if (timer.type == "pause" || timer.type == "")
+    document.body.classList.add("is-pause");
+  else document.body.classList.remove("is-pause");
+});
