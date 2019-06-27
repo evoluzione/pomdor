@@ -1,12 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Pomdor</title>
+	<link rel="stylesheet" href="../node_modules/normalize.css/normalize.css">
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+	<script src="app.js"></script>
 </head>
+
 <body>
-    Prova
+
+	<div class="total">1/8</div>
+
+	<svg class="progress" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" data-value="18">
+		<circle class="progress__circle" r="45" cx="50" cy="50" />
+		<!-- 282.78302001953125 is auto-calculated by path.getTotalLength() -->
+		<path class="progress__current js-progress-current" d="M5,50a45,45 0 1,0 90,0a45,45 0 1,0 -90,0" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="282.78302001953125" stroke-dasharray="282.78302001953125" />
+		<text class="progress__time" x="50" y="50" text-anchor="middle" dominant-baseline="central">24:33</text>
+	</svg>
+
+	<i class="icon icon--audio fas fa-volume-up js-audio"></i>
+	<i class="icon icon--settings fas fa-sliders-h js-settings"></i>
+
+	<a class="button button--primary button--timer" href="#">Quit</a>
+
+	<div class="panel" id="js-panel">
+		<strong class="panel__title">Settings</strong>
+		<div class="panel__option">
+			<p class="panel__label">Work minutes</p>
+			<input class="panel__input" type="number" name="" id="" value="25">
+		</div>
+		<div class="panel__option">
+			<p class="panel__label">Pause minutes</p>
+			<input class="panel__input" type="number" name="" id="" value="5">
+		</div>
+		<div class="panel__option">
+			<p class="panel__label">Morning time</p>
+			<input class="panel__input" type="number" name="" id="">
+		</div>
+		<div class="panel__option">
+			<p class="panel__label">Afternoon time</p>
+			<input class="panel__input" type="number" name="" id="">
+		</div>
+
+		<a class="button button--secondary button--panel" href="#">Save</a>
+	</div>
+
 </body>
 </html>

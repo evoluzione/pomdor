@@ -181,7 +181,8 @@ const createWindow = () => {
     frame: false,
     fullscreenable: false,
     resizable: false,
-    transparent: false,
+    transparent: true,
+    hasShadow: false,
     webPreferences: {
       nodeIntegration: true,
       //backgroundThrottling: false
