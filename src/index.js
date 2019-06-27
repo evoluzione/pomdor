@@ -1,7 +1,8 @@
-const { app, Menu, Tray } = require("electron");
+const { app, Menu, Tray, BrowserWindow, ipcMain, Notification } = require("electron");
 const notifier = require("node-notifier");
 const path = require("path");
 let options = {};
+let window = undefined
 if (process.platform !== "darwin") {
   options = {
     player: path.join(__dirname, "../lib/mplayer.exe")
@@ -51,7 +52,10 @@ const createTray = () => {
       }
     },
     {
-      label: "Quit",
+      type: 'separator'
+    },
+    {
+      label: "Quit Pomdor",
       click() {
         app.quit();
       }
@@ -59,7 +63,10 @@ const createTray = () => {
   ]);
   tray = new Tray(icon);
   tray.setToolTip("Pomdor");
-  tray.setContextMenu(contextMenu);
+  //tray.setContextMenu(contextMenu);
+  tray.on('click', function (event) {
+    toggleWindow()
+  });
 };
 
 const setNull = () => {
@@ -113,9 +120,10 @@ const playSound = () => {
 };
 
 function update() {
+
   let date = moment();
   let timer = null;
- 
+
   if (timers[0].startMoment.date() != date.date()) updateTimers();
 
   timers.forEach(t => {
@@ -152,5 +160,53 @@ if (process.platform === "darwin") app.dock.hide();
 
 app.on("ready", () => {
   createTray();
+  createWindow();
   setInterval(update, 1000);
 });
+
+
+const getWindowPosition = () => {
+  const windowBounds = window.getBounds();
+  const trayBounds = tray.getBounds();
+  const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
+  const y = Math.round(trayBounds.y + trayBounds.height + 4);
+  return {x: x, y: y};
+}
+
+const createWindow = () => {
+  window = new BrowserWindow({
+    width: 320,
+    height: 450,
+    show: false,
+    frame: false,
+    fullscreenable: false,
+    resizable: false,
+    transparent: false,
+    webPreferences: {
+      nodeIntegration: true,
+      //backgroundThrottling: false
+    }
+  })
+  window.loadURL(`file://${path.join(__dirname, 'index.html')}`)
+
+  // Hide the window when it loses focus
+  window.on('blur', () => {
+    if (!window.webContents.isDevToolsOpened()) {
+      window.hide()
+    }
+  })
+}
+
+const toggleWindow = () => {
+  window.isVisible() ? window.hide() : showWindow();
+}
+
+const showWindow = () => {
+  const position = getWindowPosition();
+  window.setPosition(position.x, position.y, false);
+  window.show();
+}
+
+ipcMain.on('show-window', () => {
+  showWindow()
+})
