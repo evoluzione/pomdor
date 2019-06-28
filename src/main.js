@@ -118,12 +118,17 @@ function update() {
     if (date.isBetween(t.startMoment, t.endMoment)) timer = t;
   });
 
-  let a = moment(timer.endMoment.diff(date));
-  let b = moment(timer.endMoment.diff(timer.startMoment));
-
-  let time = moment(timer.endMoment.diff(date)).format("mm:ss");
-  let type = timer != null ? timer.type : "";
-  let name = timer != null ? timer.name : "";
+  let time = timer
+    ? moment(timer.endMoment.diff(date)).format("mm:ss")
+    : "00:00";
+  let type = timer ? timer.type : "";
+  let name = timer ? timer.name : "";
+  let progress = 0;
+  if (timer)
+    progress = Math.round(
+      (moment(timer.endMoment.diff(date)) * 100) /
+        moment(timer.endMoment.diff(timer.startMoment))
+    );
 
   let typeTimers = timers.filter(t => t.type == type);
 
@@ -132,7 +137,7 @@ function update() {
     type: type,
     name: name,
     total: `${typeTimers.indexOf(timer) + 1}/${typeTimers.length}`,
-    progress: Math.round((a * 100) / b)
+    progress: progress
   });
 
   if (timer === null) {
