@@ -14,9 +14,7 @@ let window = undefined;
 const timers = require("./timers.json");
 let tray = undefined;
 let colorActive = "\u001b[31m";
-let backgroundActive = "\u001b[41;1m";
 let colorPause = "\u001b[32m";
-let backgroundPause = "\u001b[42;1m";
 let icon;
 
 if (process.platform === "darwin") {
@@ -34,28 +32,8 @@ const updateTimers = () => {
 updateTimers();
 
 const createTray = () => {
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: "About",
-      click() {
-        require("electron").shell.openExternalSync(
-          "https://www.evoluzionetelematica.it"
-        );
-      }
-    },
-    {
-      type: "separator"
-    },
-    {
-      label: "Quit Pomdor",
-      click() {
-        app.quit();
-      }
-    }
-  ]);
   tray = new Tray(icon);
   tray.setToolTip("Pomdor");
-  //tray.setContextMenu(contextMenu);
   tray.on("click", function(event) {
     toggleWindow();
   });
