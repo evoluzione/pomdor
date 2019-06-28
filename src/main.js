@@ -77,6 +77,7 @@ const notify = (time, pause) => {
     var notification = new Notification({
       title: "pomdör",
       body: pause ? "🍅 Pomodoro" : "🍌 Pausa",
+      silent: true,
       icon: icon
     });
     notification.show();
