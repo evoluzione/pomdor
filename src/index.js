@@ -5,25 +5,8 @@ ipcRenderer.on("play", (_, audio) => {
   player.play();
 });
 
-window.addEventListener("DOMContentLoaded", () => {
-  [].forEach.call(document.querySelectorAll(".js-audio"), function(el) {
-    el.addEventListener("click", () => {
-      el.classList.toggle("fa-volume-mute");
-      el.classList.toggle("fa-volume-up");
-    });
-  });
-
-  [].forEach.call(document.querySelectorAll(".js-settings"), function(el) {
-    el.addEventListener("click", () => {
-      const a = document.getElementById("js-panel");
-      a.classList.toggle("is-active");
-      el.classList.toggle("fa-times-circle");
-      el.classList.toggle("fa-sliders-h");
-    });
-  });
-
-  const progressCurrent = document.querySelectorAll(".js-progress-current");
-
+const progressCurrent = document.querySelectorAll(".js-progress-current");
+const drawProgress = () => {
   progressCurrent.forEach(path => {
     // Get the length of the path
     let length = path.getTotalLength();
@@ -41,6 +24,26 @@ window.addEventListener("DOMContentLoaded", () => {
     // Set the Offset
     path.style.strokeDashoffset = Math.max(0, to);
   });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  [].forEach.call(document.querySelectorAll(".js-audio"), function(el) {
+    el.addEventListener("click", () => {
+      el.classList.toggle("fa-volume-mute");
+      el.classList.toggle("fa-volume-up");
+    });
+  });
+
+  [].forEach.call(document.querySelectorAll(".js-settings"), function(el) {
+    el.addEventListener("click", () => {
+      const a = document.getElementById("js-panel");
+      a.classList.toggle("is-active");
+      el.classList.toggle("fa-times-circle");
+      el.classList.toggle("fa-sliders-h");
+    });
+  });
+
+  drawProgress();
 });
 
 const quit = document.getElementById("js-quit");
@@ -55,6 +58,7 @@ ipcRenderer.on("updateTimer", (_, timer) => {
   total.innerHTML = timer.total;
   progressTime.innerHTML = timer.name + " " + timer.time;
   progress.setAttribute('data-value', timer.progress);
+  drawProgress();
   if (timer.type == "pause" || timer.type == "")
     document.body.classList.add("is-pause");
   else document.body.classList.remove("is-pause");
