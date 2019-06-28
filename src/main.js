@@ -48,7 +48,7 @@ const setNull = () => {
 };
 
 const setWork = (name, time) => {
-  tray.setTitle("🍅 " + colorActive + name + " - " + time);
+  tray.setTitle("🍅 " + colorActive + time);
 
   if (process.platform !== "darwin") {
     tray.setToolTip(name + " - " + time);
@@ -57,7 +57,7 @@ const setWork = (name, time) => {
 };
 
 const setPause = (name, time) => {
-  tray.setTitle("🍌 " + colorPause + name + " - " + time);
+  tray.setTitle("🍌 " + colorPause + time);
   if (process.platform !== "darwin") {
     tray.setToolTip(name + " - " + time);
     tray.setImage(path.resolve(__dirname, "pomdor-win-green.png"));
