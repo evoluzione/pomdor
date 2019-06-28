@@ -13,8 +13,8 @@ moment.locale("it");
 let window = undefined;
 const timers = require("./timers.json");
 let tray = undefined;
-let colorActive = "\u001b[31m";
-let colorPause = "\u001b[32m";
+let colorActive = "\u001b[31;1m";
+let colorPause = "\u001b[32;1m";
 let icon;
 
 if (process.platform === "darwin") {
