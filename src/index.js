@@ -58,7 +58,7 @@ const stepName = document.getElementById("js-step-name");
 ipcRenderer.on("updateTimer", (_, timer) => {
   total.innerHTML = timer.total;
   progressTime.innerHTML = timer.time;
-  stepName.innerHTML = timer.name;
+  stepName.innerHTML = timer.name + ' - ';
   progress.setAttribute('data-value', timer.progress);
   drawProgress();
   if (timer.type == "pause" || timer.type == "")

@@ -126,11 +126,6 @@ figure {
 	font-size: 14px;
 }
 
-.step__name:after {
-	content: "-";
-	padding: 0 3px;
-}
-
 .button {
 	font-size: 12px;
 	border: 1px solid white;
