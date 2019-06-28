@@ -51,12 +51,14 @@ quit.addEventListener("click", () => {
   ipcRenderer.send("quit");
 });
 
-const total = document.getElementById("js-total");
+const total = document.getElementById("js-step-total");
 const progress = document.getElementById("js-progress");
 const progressTime = document.getElementById("js-progress-time");
+const stepName = document.getElementById("js-step-name");
 ipcRenderer.on("updateTimer", (_, timer) => {
   total.innerHTML = timer.total;
-  progressTime.innerHTML = timer.name + " " + timer.time;
+  progressTime.innerHTML = timer.time;
+  stepName.innerHTML = timer.name;
   progress.setAttribute('data-value', timer.progress);
   drawProgress();
   if (timer.type == "pause" || timer.type == "")
