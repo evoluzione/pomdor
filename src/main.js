@@ -18,9 +18,9 @@ let colorPause = "\u001b[32;1m";
 let icon;
 
 if (process.platform === "darwin") {
-  icon = path.resolve(__dirname, "pomdor-mac.png");
+  icon = path.resolve(__dirname, "images/pomdor-mac.png");
 } else {
-  icon = path.resolve(__dirname, "pomdor-win-black.png");
+  icon = path.resolve(__dirname, "images/pomdor-win-black.png");
 }
 
 const updateTimers = () => {
@@ -43,7 +43,7 @@ const setNull = () => {
   tray.setTitle("🕹️");
   if (process.platform !== "darwin") {
     tray.setToolTip("🕹️");
-    tray.setImage(path.resolve(__dirname, "pomdor-win-black.png"));
+    tray.setImage(path.resolve(__dirname, "images/pomdor-win-black.png"));
   }
 };
 
@@ -52,7 +52,7 @@ const setWork = (name, time) => {
 
   if (process.platform !== "darwin") {
     tray.setToolTip(name + " - " + time);
-    tray.setImage(path.resolve(__dirname, "pomdor-win-red.png"));
+    tray.setImage(path.resolve(__dirname, "images/pomdor-win-red.png"));
   }
 };
 
@@ -60,7 +60,7 @@ const setPause = (name, time) => {
   tray.setTitle("🍌 " + colorPause + time);
   if (process.platform !== "darwin") {
     tray.setToolTip(name + " - " + time);
-    tray.setImage(path.resolve(__dirname, "pomdor-win-green.png"));
+    tray.setImage(path.resolve(__dirname, "images/pomdor-win-green.png"));
   }
 };
 
@@ -68,7 +68,7 @@ const setBoh = () => {
   tray.setTitle("😴 Boh");
   if (process.platform !== "darwin") {
     tray.setToolTip("😴 Boh");
-    tray.setImage(path.resolve(__dirname, "pomdor-win-black.png"));
+    tray.setImage(path.resolve(__dirname, "images/pomdor-win-black.png"));
   }
 };
 
@@ -81,8 +81,8 @@ const notify = (time, pause) => {
       icon: icon
     });
     notification.show();
-    let audio = path.join(__dirname, "../audio", "work.wav");
-    if (pause) audio = path.join(__dirname, "../audio", "pause.wav");
+    let audio = path.join(__dirname, "audio", "work.wav");
+    if (pause) audio = path.join(__dirname, "audio", "pause.wav");
     window.webContents.send("play", audio);
   }
 };
