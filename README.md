@@ -5,6 +5,7 @@ simply clone the repo
 ```sh
 git clone git@github.com:evoluzione/pomdor.git 
 cd pomdor
+npm install
 ```
 edit the timer.json inside src
 ```sh
