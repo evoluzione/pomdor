@@ -1,6 +1,5 @@
 const {
   app,
-  Menu,
   Tray,
   BrowserWindow,
   ipcMain,
@@ -64,19 +63,11 @@ const setPause = (name, time) => {
   }
 };
 
-const setBoh = () => {
-  tray.setTitle("😴 Boh");
-  if (process.platform !== "darwin") {
-    tray.setToolTip("😴 Boh");
-    tray.setImage(path.resolve(__dirname, "images/pomdor-win-black.png"));
-  }
-};
-
 const notify = (time, pause) => {
   if (time === "00:01") {
     var notification = new Notification({
       title: "pomdör",
-      body: pause ? "🍅 Pomodoro" : "🍌 Pausa",
+      body: pause ? "🍅 Pomodor" : "🍌 Pause",
       silent: true,
       icon: icon
     });
@@ -127,8 +118,6 @@ function update() {
   } else if (type === "pause") {
     setPause(name, time);
     notify(time, true);
-  } else {
-    setBoh();
   }
 }
 
@@ -172,13 +161,6 @@ const createWindow = () => {
     }
   });
   window.loadURL(`file://${path.join(__dirname, "index.html")}`);
-
-  // Hide the window when it loses focus
-  // window.on('blur', () => {
-  //   if (!window.webContents.isDevToolsOpened()) {
-  //     window.hide()
-  //   }
-  // })
 };
 
 const toggleWindow = () => {

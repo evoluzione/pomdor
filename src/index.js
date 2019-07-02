@@ -56,12 +56,16 @@ const progress = document.getElementById("js-progress");
 const progressTime = document.getElementById("js-progress-time");
 const stepName = document.getElementById("js-step-name");
 ipcRenderer.on("updateTimer", (_, timer) => {
-  total.innerHTML = timer.total;
   progressTime.innerHTML = timer.time;
-  stepName.innerHTML = timer.name + ' - ';
   progress.setAttribute('data-value', timer.progress);
   drawProgress();
-  if (timer.type == "pause" || timer.type == "")
+  if (timer.type == "pause" || timer.type == "") {
     document.body.classList.add("is-pause");
-  else document.body.classList.remove("is-pause");
+    stepName.innerHTML = 'Pause';
+    total.innerHTML = '';
+  } else {
+    total.innerHTML = timer.total;
+    stepName.innerHTML = timer.name + ' - ';
+    document.body.classList.remove("is-pause");
+  }
 });
