@@ -16,6 +16,8 @@ let colorActive = "\u001b[31;1m";
 let colorPause = "\u001b[32;1m";
 let icon;
 
+let playSound = true;
+
 if (process.platform === "darwin") {
   icon = path.resolve(__dirname, "images/pomdor-mac.png");
 } else {
@@ -66,14 +68,15 @@ const setPause = (name, time) => {
 const notify = (time, pause) => {
   if (time === "00:01") {
     var notification = new Notification({
-      title: "pomdör",
+      title: "Pomdor",
       body: pause ? "🍅 Pomodor" : "🍌 Pause",
       silent: true,
       icon: icon
     });
     notification.show();
-    let audio = path.join(__dirname, "audio", "work.wav");
-    if (pause) audio = path.join(__dirname, "audio", "pause.wav");
+    let audio = path.join(__dirname, "audio", "pause.wav");
+    if (pause) audio = path.join(__dirname, "audio", "work.wav");
+    if(playSound)
     window.webContents.send("play", audio);
   }
 };
@@ -81,6 +84,7 @@ const notify = (time, pause) => {
 function update() {
   let date = moment();
   let timer = null;
+
 
   if (timers[0].startMoment.date() != date.date()) updateTimers();
 
@@ -179,4 +183,8 @@ ipcMain.on("show-window", () => {
 
 ipcMain.on("quit", () => {
   app.quit();
+});
+
+ipcMain.on("audioToggled", () => {
+  playSound = !playSound;
 });

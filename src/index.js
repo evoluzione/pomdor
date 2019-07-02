@@ -31,6 +31,8 @@ window.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("click", () => {
       el.classList.toggle("fa-volume-mute");
       el.classList.toggle("fa-volume-up");
+      ipcRenderer.send("audioToggled");
+      //player.paused ? player.play() : player.pause();
     });
   });
 
