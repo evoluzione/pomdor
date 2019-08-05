@@ -1,55 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Pomdor</title>
-	<link rel="stylesheet" href="../node_modules/normalize.css/normalize.css">
-	<link rel="stylesheet" href="styles.css">
-	<link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-</head>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Pomdor</title>
+		<link
+			rel="stylesheet"
+			href="../node_modules/normalize.css/normalize.css"
+		/>
+		<link rel="stylesheet" href="styles.css" />
+		<link
+			rel="stylesheet"
+			href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+		/>
+	</head>
 
-<body>
-
-	<div class="step">
-		<span id="js-step-name" class="step__name"></span><span id="js-step-total" class="step__total"></span>
-	</div>
-
-	<svg id="js-progress" class="progress" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" data-value="56">
-		<circle class="progress__circle" r="45" cx="50" cy="50" />
-		<!-- 282.78302001953125 is auto-calculated by path.getTotalLength() -->
-		<path class="progress__current js-progress-current" d="M5,50a45,45 0 1,0 90,0a45,45 0 1,0 -90,0" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="282.78302001953125" stroke-dasharray="282.78302001953125" />
-		<text id="js-progress-time" class="progress__time" x="50" y="50" text-anchor="middle" dominant-baseline="central"></text>
-	</svg>
-
-	<i class="icon icon--audio fas fa-volume-up js-audio"></i>
-	<!-- <i class="icon icon--settings fas fa-sliders-h js-settings"></i> -->
-
-	<a id="js-quit" class="button button--primary button--timer" href="#">Quit</a>
-
-	<!-- <div class="panel" id="js-panel">
-		<strong class="panel__title">Settings</strong>
-		<div class="panel__option">
-			<p class="panel__label">Work minutes</p>
-			<input class="panel__input" type="number" name="" id="" value="25">
-		</div>
-		<div class="panel__option">
-			<p class="panel__label">Pause minutes</p>
-			<input class="panel__input" type="number" name="" id="" value="5">
-		</div>
-		<div class="panel__option">
-			<p class="panel__label">Morning time</p>
-			<input class="panel__input" type="number" name="" id="">
-		</div>
-		<div class="panel__option">
-			<p class="panel__label">Afternoon time</p>
-			<input class="panel__input" type="number" name="" id="">
+	<body>
+		<div class="step">
+			<span id="js-step-name" class="step__name"></span
+			><span id="js-step-total" class="step__total"></span>
 		</div>
 
-		<a class="button button--secondary button--panel" href="#">Save</a>
-	</div> -->
-	<script src="index.js"></script>
+		<svg
+			id="js-progress"
+			class="progress"
+			viewBox="0 0 100 100"
+			xmlns="http://www.w3.org/2000/svg"
+			preserveAspectRatio="none"
+			data-value="56"
+		>
+			<circle class="progress__circle" r="45" cx="50" cy="50" />
+			<!-- 282.78302001953125 is auto-calculated by path.getTotalLength() -->
+			<path
+				class="progress__current js-progress-current"
+				d="M5,50a45,45 0 1,0 90,0a45,45 0 1,0 -90,0"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-dashoffset="282.78302001953125"
+				stroke-dasharray="282.78302001953125"
+			/>
+			<text
+				id="js-progress-time"
+				class="progress__time"
+				x="50"
+				y="50"
+				text-anchor="middle"
+				dominant-baseline="central"
+			></text>
+		</svg>
 
-</body>
+		<i class="icon icon--audio fas fa-volume-up js-audio"></i>
+		<i class="icon icon--settings fas fa-sliders-h js-settings"></i>
+
+		<a id="js-quit" class="button button--primary button--timer" href="#"
+			>Quit</a
+		>
+
+		<div class="panel" id="js-panel">
+			<strong class="panel__title">Settings</strong>
+			<div class="panel__option">
+				<p class="panel__label">Luxafor ID</p>
+				<input
+					class="panel__input"
+					type="text"
+					name=""
+					id="luxaforId"
+					value="89de21fe5934"
+				/>
+			</div>
+
+			<a
+				id="js-save"
+				class="button button--secondary button--panel"
+				href="#"
+				>Save</a
+			>
+		</div>
+		<script src="index.js"></script>
+	</body>
 </html>

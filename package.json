@@ -1,62 +1,33 @@
 {
-  "name": "pomdor",
-  "productName": "pomdor",
-  "version": "1.0.0",
-  "description": "team shared timer",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
-  },
-  "keywords": [],
-  "author": "evoluzione telematica",
-  "license": "MIT",
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "pomdor"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
-    }
-  },
-  "dependencies": {
-    "@sindresorhus/do-not-disturb": "^1.0.0",
-    "electron-squirrel-startup": "^1.0.0",
-    "moment": "^2.24.0",
-    "node-notifier": "^5.4.0",
-    "normalize.css": "^8.0.1",
-    "play-sound": "^1.1.3",
-    "superagent": "^5.0.6",
-    "@fortawesome/fontawesome-free": "^5.9.0"
-  },
-  "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.39",
-    "@electron-forge/maker-deb": "^6.0.0-beta.39",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.39",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.39",
-    "@electron-forge/maker-zip": "^6.0.0-beta.39",
-    "electron": "5.0.2"
-  }
+	"name": "pomdor",
+	"productName": "pomdor",
+	"version": "1.0.0",
+	"description": "team shared timer",
+	"main": "src/main.js",
+	"scripts": {
+		"start": "electron .",
+		"pack": "electron-builder --dir",
+		"dist": "electron-builder"
+	},
+	"keywords": [],
+	"author": "evoluzione",
+	"license": "MIT",
+	"build": {
+		"appId": "com.evoluzione.pomodoro",
+		"mac": {
+			"category": "com.evoluzione.pomodoro.productivity"
+		}
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-free": "^5.9.0",
+		"electron-json-storage": "^4.1.6",
+		"electron-squirrel-startup": "^1.0.0",
+		"moment": "^2.24.0",
+		"normalize.css": "^8.0.1",
+		"superagent": "^5.1.0"
+	},
+	"devDependencies": {
+		"electron": "^6.0.0",
+		"electron-builder": "^21.2.0"
+	}
 }
