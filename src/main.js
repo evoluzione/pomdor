@@ -13,6 +13,9 @@ const moment = require("moment");
 moment.locale("it");
 
 const storage = require("electron-json-storage");
+const { autoUpdater } = require("electron-updater");
+
+const package = require("../package.json");
 
 let window = undefined;
 const timers = require("./timers.json");
@@ -48,6 +51,9 @@ const createTray = () => {
 	tray = new Tray(icon);
 	tray.setToolTip("Pomdor");
 	const contextMenu = Menu.buildFromTemplate([
+		{
+			label: "Version: " + package.version
+		},
 		{
 			label: "Quit",
 			click: () => {
@@ -159,7 +165,7 @@ function update() {
 	} else if (type === "work") {
 		setWork(name, time);
 		notify(time, false);
-	} else if (type === "pause") {
+	} else if (type === "pause" || type === "longpause") {
 		setPause(name, time);
 		notify(time, true);
 	}
@@ -234,4 +240,12 @@ ipcMain.on("settingsSaved", () => {
 		if (error) throw error;
 		luxaforId = data.id;
 	});
+});
+
+autoUpdater.on("update-downloaded", info => {
+	autoUpdater.quitAndInstall();
+});
+
+app.on("ready", function() {
+	autoUpdater.checkForUpdates();
 });

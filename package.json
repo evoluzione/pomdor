@@ -16,12 +16,19 @@
 		"appId": "com.evoluzione.pomodoro",
 		"mac": {
 			"category": "com.evoluzione.pomodoro.productivity"
-		}
+		},
+		"publish": [
+			{
+				"provider": "generic",
+				"url": "http://demo7.evoluzionetelematica.it/pomdor/"
+			}
+		]
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^5.9.0",
 		"electron-json-storage": "^4.1.6",
 		"electron-squirrel-startup": "^1.0.0",
+		"electron-updater": "^4.1.2",
 		"moment": "^2.24.0",
 		"normalize.css": "^8.0.1",
 		"superagent": "^5.1.0"
