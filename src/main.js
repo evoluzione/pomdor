@@ -50,18 +50,21 @@ updateTimers();
 const createTray = () => {
 	tray = new Tray(icon);
 	tray.setToolTip("Pomdor");
-	const contextMenu = Menu.buildFromTemplate([
-		{
-			label: "Version: " + package.version
-		},
-		{
-			label: "Quit",
-			click: () => {
-				app.quit();
+	if (process.platform !== "darwin") {
+		const contextMenu = Menu.buildFromTemplate([
+			{
+				label: "Version: " + package.version
+			},
+			{
+				label: "Quit",
+				click: () => {
+					app.quit();
+				}
 			}
-		}
-	]);
-	tray.setContextMenu(contextMenu);
+		]);
+		tray.setContextMenu(contextMenu);
+	}
+
 	tray.on("click", function(event) {
 		toggleWindow();
 	});
@@ -242,6 +245,26 @@ ipcMain.on("settingsSaved", () => {
 	});
 });
 
+autoUpdater.on("checking-for-update", () => {
+	sendWarningToWindow("verifica presenza nuovi aggiornamenti...");
+});
+
+autoUpdater.on("update-available", info => {
+	sendWarningToWindow("aggiornamento disponibile.");
+});
+
+autoUpdater.on("update-not-available", info => {
+	sendStatusToWindow("la tua versione è aggiornata.");
+});
+
+autoUpdater.on("error", err => {
+	sendErrorToWindow("errore aggiornamento. " + err);
+});
+
+autoUpdater.on("download-progress", progressObj => {
+	sendWarningToWindow("scaricamento in corso " + progressObj.percent + "%");
+});
+
 autoUpdater.on("update-downloaded", info => {
 	autoUpdater.quitAndInstall();
 });
@@ -249,3 +272,15 @@ autoUpdater.on("update-downloaded", info => {
 app.on("ready", function() {
 	autoUpdater.checkForUpdates();
 });
+
+const sendStatusToWindow = text => {
+	window.webContents.send("message", text);
+};
+
+const sendErrorToWindow = text => {
+	window.webContents.send("error", text);
+};
+
+const sendWarningToWindow = text => {
+	window.webContents.send("warning", text);
+};
