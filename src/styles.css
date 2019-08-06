@@ -208,3 +208,14 @@ figure {
 	font-weight: bold;
 	font-size: 12px;
 }
+
+
+.panel__version {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+	width: 100%;
+	color: grey;
+	font-size: 12px;
+}
