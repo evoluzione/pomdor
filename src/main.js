@@ -1,4 +1,11 @@
-const { app, Tray, BrowserWindow, ipcMain, Notification } = require("electron");
+const {
+	app,
+	Tray,
+	BrowserWindow,
+	ipcMain,
+	Notification,
+	Menu
+} = require("electron");
 
 const path = require("path");
 const request = require("superagent");
@@ -40,6 +47,15 @@ updateTimers();
 const createTray = () => {
 	tray = new Tray(icon);
 	tray.setToolTip("Pomdor");
+	const contextMenu = Menu.buildFromTemplate([
+		{
+			label: "Quit",
+			click: () => {
+				app.quit();
+			}
+		}
+	]);
+	tray.setContextMenu(contextMenu);
 	tray.on("click", function(event) {
 		toggleWindow();
 	});
