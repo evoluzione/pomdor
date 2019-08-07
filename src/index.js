@@ -1,5 +1,8 @@
 const { ipcRenderer } = require("electron");
 const storage = require("electron-json-storage");
+const package = require("../package.json");
+const version = document.getElementById('js-version');
+version.innerHTML = package.version;
 
 ipcRenderer.on("play", (_, audio) => {
 	var player = new Audio(audio);
