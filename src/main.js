@@ -246,23 +246,34 @@ ipcMain.on("settingsSaved", () => {
 });
 
 autoUpdater.on("checking-for-update", () => {
-	sendWarningToWindow("verifica presenza nuovi aggiornamenti...");
+	console.log("verifica presenza nuovi aggiornamenti...");
+	window.webContents.send(
+		"message",
+		"verifica presenza nuovi aggiornamenti..."
+	);
 });
 
 autoUpdater.on("update-available", info => {
-	sendWarningToWindow("aggiornamento disponibile.");
+	console.log("aggiornamento disponibile.");
+	window.webContents.send("message", "aggiornamento disponibile.");
 });
 
 autoUpdater.on("update-not-available", info => {
-	sendStatusToWindow("la tua versione è aggiornata.");
+	console.log("la tua versione è aggiornata.");
+	window.webContents.send("message", "la tua versione è aggiornata.");
 });
 
 autoUpdater.on("error", err => {
-	sendErrorToWindow("errore aggiornamento. " + err);
+	console.log("errore aggiornamento. " + err);
+	window.webContents.send("message", "errore aggiornamento. " + err);
 });
 
 autoUpdater.on("download-progress", progressObj => {
-	sendWarningToWindow("scaricamento in corso " + progressObj.percent + "%");
+	console.log("scaricamento in corso " + progressObj.percent + "%");
+	window.webContents.send(
+		"message",
+		"scaricamento in corso " + progressObj.percent + "%"
+	);
 });
 
 autoUpdater.on("update-downloaded", info => {
@@ -272,15 +283,3 @@ autoUpdater.on("update-downloaded", info => {
 app.on("ready", function() {
 	autoUpdater.checkForUpdates();
 });
-
-const sendStatusToWindow = text => {
-	window.webContents.send("message", text);
-};
-
-const sendErrorToWindow = text => {
-	window.webContents.send("error", text);
-};
-
-const sendWarningToWindow = text => {
-	window.webContents.send("warning", text);
-};

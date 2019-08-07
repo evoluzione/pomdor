@@ -96,3 +96,8 @@ ipcRenderer.on("updateTimer", (_, timer) => {
 		document.body.classList.remove("is-pause");
 	}
 });
+
+const flash = document.getElementById("js-flash");
+ipcRenderer.on("message", (_, text) => {
+	flash.innerHTML = text;
+});
