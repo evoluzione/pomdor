@@ -5,7 +5,8 @@
 
 body,
 html {
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif;
 	color: white;
 	height: 100%;
 	text-align: center;
@@ -75,9 +76,9 @@ figure {
 	fill: none;
 	transition: stroke-dashoffset 1s cubic-bezier(0.43, 0.41, 0.22, 0.91);
 	-webkit-transform-origin: center center;
-			transform-origin: center center;
+	transform-origin: center center;
 	-webkit-transform: rotate(-90deg) scaleX(-1);
-			transform: rotate(-90deg) scaleX(-1);
+	transform: rotate(-90deg) scaleX(-1);
 }
 
 .progress__time {
@@ -137,7 +138,7 @@ figure {
 	vertical-align: middle;
 	white-space: nowrap;
 	cursor: pointer;
-	transition: all .15s;
+	transition: all 0.15s;
 	text-decoration: none;
 	text-align: center;
 	font-weight: bold;
@@ -209,10 +210,19 @@ figure {
 	font-size: 12px;
 }
 
-
 .panel__version {
 	position: absolute;
 	bottom: 0;
+	left: 0;
+	text-align: center;
+	width: 100%;
+	color: grey;
+	font-size: 12px;
+}
+
+.panel__update {
+	position: absolute;
+	bottom: 20px;
 	left: 0;
 	text-align: center;
 	width: 100%;

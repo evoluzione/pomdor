@@ -1,7 +1,7 @@
 const { ipcRenderer } = require("electron");
 const storage = require("electron-json-storage");
 const package = require("../package.json");
-const version = document.getElementById('js-version');
+const version = document.getElementById("js-version");
 version.innerHTML = package.version;
 
 ipcRenderer.on("play", (_, audio) => {
@@ -62,19 +62,16 @@ const luxaforId = document.getElementById("luxaforId");
 
 storage.get("luxaforId", function(error, data) {
 	if (error) throw error;
-
-	console.log("index luxaforId", data);
 	luxaforId.value = data.id;
 });
 
 save.addEventListener("click", () => {
-	console.log("save", luxaforId.value);
 	const panel = document.getElementById("js-panel");
-	storage.set("luxaforId", { id: luxaforId.value }, function(error) {
+	storage.set("luxaforId", { id: luxaforId.value }, error => {
 		if (error) throw error;
 		ipcRenderer.send("settingsSaved");
-		panel.classList.toggle("is-active");
 	});
+	panel.classList.toggle("is-active");
 });
 
 const total = document.getElementById("js-step-total");
@@ -100,7 +97,8 @@ ipcRenderer.on("updateTimer", (_, timer) => {
 	}
 });
 
-const flash = document.getElementById("js-flash");
+const flash = document.getElementById("js-message");
 ipcRenderer.on("message", (_, text) => {
+	console.log(text);
 	flash.innerHTML = text;
 });

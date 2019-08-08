@@ -145,20 +145,33 @@ function update() {
 	if (luxaforId && type !== status) {
 		status = type;
 
-		let color = "magenta";
-		if (type === "work") color = "red";
-		if (type === "pause") color = "green";
-		if (type === "longpause") color = "yellow";
+		let actionFields = {
+			color: "custom",
+			custom_color: "000000"
+		};
+
+		if (type === "work")
+			actionFields = {
+				color: "red"
+			};
+		if (type === "pause")
+			actionFields = {
+				color: "green"
+			};
+		if (type === "longpause")
+			actionFields = {
+				color: "yellow"
+			};
+
+		const data = {
+			userId: luxaforId,
+			actionFields
+		};
 
 		request
 			.post("https://api.luxafor.com/webhook/v1/actions/solid_color")
 			.set("Content-Type", "application/json")
-			.send({
-				userId: luxaforId,
-				actionFields: {
-					color: color
-				}
-			})
+			.send(data)
 			.then(res => console.log(res.body))
 			.catch(err => console.log(err));
 	}
