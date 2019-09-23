@@ -95,17 +95,22 @@ const setPause = (name, time) => {
 	}
 };
 
-const notify = (time, pause) => {
+const notify = (time, type) => {
 	if (time === "00:01") {
 		var notification = new Notification({
 			title: "Pomdor",
-			body: pause ? "🍅 Pomodor" : "🍌 Pause",
+			body:
+				type == "pause" || type == "longpause"
+					? "🍅 Pomodor"
+					: "🍌 Pause",
 			silent: true,
 			icon: icon
 		});
 		notification.show();
-		let audio = path.join(__dirname, "audio", "pause.wav");
-		if (pause) audio = path.join(__dirname, "audio", "work.wav");
+		let audio = path.join(__dirname, "audio", "pause-vic.mpeg");
+		if (type == "pause") audio = path.join(__dirname, "audio", "work.m4a");
+		if (type == "longpause")
+			audio = path.join(__dirname, "audio", "longpause.m4a");
 		if (playSound) window.webContents.send("play", audio);
 	}
 };
@@ -176,15 +181,10 @@ function update() {
 			.catch(err => console.log(err));
 	}
 
-	if (timer === null) {
-		setNull();
-	} else if (type === "work") {
-		setWork(name, time);
-		notify(time, false);
-	} else if (type === "pause" || type === "longpause") {
-		setPause(name, time);
-		notify(time, true);
-	}
+	if (timer === null) setNull();
+	else if (type === "work") setWork(name, time);
+	else if (type === "pause" || type === "longpause") setPause(name, time);
+	notify(time, type);
 }
 
 if (process.platform === "darwin") app.dock.hide();
@@ -259,7 +259,6 @@ ipcMain.on("settingsSaved", () => {
 });
 
 autoUpdater.on("checking-for-update", () => {
-	console.log("verifica presenza nuovi aggiornamenti...");
 	window.webContents.send(
 		"message",
 		"verifica presenza nuovi aggiornamenti..."
@@ -267,22 +266,18 @@ autoUpdater.on("checking-for-update", () => {
 });
 
 autoUpdater.on("update-available", info => {
-	console.log("aggiornamento disponibile.");
 	window.webContents.send("message", "aggiornamento disponibile.");
 });
 
 autoUpdater.on("update-not-available", info => {
-	console.log("la tua versione è aggiornata.");
 	window.webContents.send("message", "la tua versione è aggiornata.");
 });
 
 autoUpdater.on("error", err => {
-	console.log("errore aggiornamento. " + err);
 	window.webContents.send("message", "errore aggiornamento. " + err);
 });
 
 autoUpdater.on("download-progress", progressObj => {
-	console.log("scaricamento in corso " + progressObj.percent + "%");
 	window.webContents.send(
 		"message",
 		"scaricamento in corso " + progressObj.percent + "%"
@@ -295,4 +290,21 @@ autoUpdater.on("update-downloaded", info => {
 
 app.on("ready", function() {
 	autoUpdater.checkForUpdates();
+});
+
+app.on("before-quit", event => {
+	if (luxaforId) {
+		request
+			.post("https://api.luxafor.com/webhook/v1/actions/solid_color")
+			.set("Content-Type", "application/json")
+			.send({
+				userId: luxaforId,
+				actionFields: {
+					color: "custom",
+					custom_color: "000000"
+				}
+			})
+			.then(res => console.log(res.body))
+			.catch(err => console.log(err));
+	}
 });
