@@ -1,7 +1,7 @@
 {
 	"name": "pomdor",
 	"productName": "pomdor",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"description": "team shared timer",
 	"main": "src/main.js",
 	"scripts": {
