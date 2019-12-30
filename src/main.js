@@ -28,7 +28,7 @@ let icon;
 let playSound = true;
 let luxaforId = null;
 
-storage.get("luxaforId", function(error, data) {
+storage.get("luxaforId", function (error, data) {
 	if (error) throw error;
 	luxaforId = data.id;
 });
@@ -65,7 +65,7 @@ const createTray = () => {
 		tray.setContextMenu(contextMenu);
 	}
 
-	tray.on("click", function(event) {
+	tray.on("click", function (event) {
 		toggleWindow();
 	});
 };
@@ -108,7 +108,7 @@ const notify = (time, type) => {
 		});
 		notification.show();
 		let audio = path.join(__dirname, "audio", "pause-vic.mpeg");
-		if (type == "pause") audio = path.join(__dirname, "audio", "work.m4a");
+		if (type == "pause") audio = path.join(__dirname, "audio", "work-ale.wav");
 		if (type == "longpause")
 			audio = path.join(__dirname, "audio", "longpause.m4a");
 		if (playSound) window.webContents.send("play", audio);
@@ -118,6 +118,9 @@ const notify = (time, type) => {
 function update() {
 	let date = moment();
 	let timer = null;
+
+	if (date.day === 0 || date.day === 6)
+		setNull();
 
 	if (timers[0].startMoment.date() != date.date()) updateTimers();
 
@@ -134,7 +137,7 @@ function update() {
 	if (timer)
 		progress = Math.round(
 			(moment(timer.endMoment.diff(date)) * 100) /
-				moment(timer.endMoment.diff(timer.startMoment))
+			moment(timer.endMoment.diff(timer.startMoment))
 		);
 
 	let typeTimers = timers.filter(t => t.type == type);
@@ -252,7 +255,7 @@ ipcMain.on("audioToggled", () => {
 });
 
 ipcMain.on("settingsSaved", () => {
-	storage.get("luxaforId", function(error, data) {
+	storage.get("luxaforId", function (error, data) {
 		if (error) throw error;
 		luxaforId = data.id;
 	});
@@ -288,7 +291,7 @@ autoUpdater.on("update-downloaded", info => {
 	autoUpdater.quitAndInstall();
 });
 
-app.on("ready", function() {
+app.on("ready", function () {
 	autoUpdater.checkForUpdates();
 });
 
