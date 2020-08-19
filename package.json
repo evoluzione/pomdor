@@ -1,7 +1,7 @@
 {
 	"name": "pomdor",
 	"productName": "pomdor",
-	"version": "1.0.8",
+	"version": "1.1.0",
 	"description": "team shared timer",
 	"main": "src/main.js",
 	"scripts": {
@@ -13,7 +13,7 @@
 	"author": "evoluzione",
 	"license": "MIT",
 	"build": {
-		"appId": "com.evoluzione.pomodoro",
+		"appId": "com.evoluzione.pomodor",
 		"mac": {
 			"category": "com.evoluzione.pomodoro.productivity"
 		},

@@ -23,6 +23,14 @@ body.is-pause {
 	background-image: linear-gradient(#62b693, #49a066);
 }
 
+body.is-long-pause {
+	background-image: linear-gradient(#daf079, #d6ca5d);
+}
+
+body.is-null {
+	background-image: linear-gradient(#e1e7e5, #0f0f0f);
+}
+
 *,
 :before,
 :after {
@@ -68,6 +76,14 @@ figure {
 
 .is-pause .progress__circle {
 	stroke: #abcea2;
+}
+
+.is-long-pause .progress__circle {
+	stroke: #c0b443;
+}
+
+.is-null .progress__circle {
+	stroke: #bcc2bb;
 }
 
 .progress__current {
