@@ -34,7 +34,7 @@
 		"superagent": "^5.1.0"
 	},
 	"devDependencies": {
-		"electron": "^6.0.0",
+		"electron": "^18.3.7",
 		"electron-builder": "^21.2.0"
 	}
 }
